@@ -31,14 +31,21 @@ public class SimpleClient extends AbstractClient {
 					if (PrimaryController.instance != null) {
 						PrimaryController.instance.updateCatalog((List<Flower>) list);
 					}
+					if (SecondaryController.instance != null) {
+						SecondaryController.instance.updateCatalog((List<Flower>) list);
+					}
 				});
 			} else {
-				// (Optional) Handle empty flower list
+				// Handle empty flower list
 				Platform.runLater(() -> {
 					if (PrimaryController.instance != null) {
 						PrimaryController.instance.updateCatalog(java.util.Collections.emptyList());
 					}
+					if (SecondaryController.instance != null) {
+						SecondaryController.instance.updateCatalog(java.util.Collections.emptyList());
+					}
 				});
+
 			}
 		} else {
 			// Handle plain string or other types

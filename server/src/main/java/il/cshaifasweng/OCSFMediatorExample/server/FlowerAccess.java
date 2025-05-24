@@ -69,5 +69,26 @@ public class FlowerAccess {
         }
         return false;
     }
+
+    public static boolean updateFlower(Flower flower) {
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "UPDATE flowers SET name = ?, type = ?, price = ?, description = ? WHERE sku = ?")) {
+
+            stmt.setString(1, flower.getName());
+            stmt.setString(2, flower.getType());
+            stmt.setDouble(3, flower.getPrice());
+            stmt.setString(4, flower.getDescription());
+            stmt.setInt(5, flower.getSku());
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 }
 

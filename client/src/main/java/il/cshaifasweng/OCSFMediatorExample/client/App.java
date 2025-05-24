@@ -10,6 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -51,7 +52,25 @@ public class App extends Application {
         client.closeConnection();
 		super.stop();
 	}
-    
+
+    public static void switchToAdminMode(Stage stage) throws IOException {
+        Parent root = FXMLLoader.load(
+                Objects.requireNonNull(App.class.getResource("/il/cshaifasweng/OCSFMediatorExample/client/secondary.fxml"))
+        );
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+    }
+
+    public static void switchToUserMode(Stage stage) throws IOException {
+        Parent root = FXMLLoader.load(
+                Objects.requireNonNull(App.class.getResource("/il/cshaifasweng/OCSFMediatorExample/client/primary.fxml"))
+        );
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+    }
+
+
+
     @Subscribe
     public void onWarningEvent(WarningEvent event) {
     	Platform.runLater(() -> {
