@@ -13,15 +13,16 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="688.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="688.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
    <children>
-      <TableView fx:id="Catalog" layoutX="14.0" layoutY="102.0" prefHeight="349.0" prefWidth="397.0">
-        <columns>
-          <TableColumn fx:id="NameColumn" prefWidth="75.0" text="Name" />
-          <TableColumn fx:id="TypeColumn" prefWidth="75.0" text="Type" />
-            <TableColumn fx:id="PriceColumn" prefWidth="75.0" text="Price" />
-            <TableColumn fx:id="ActionColumn" prefWidth="194.00002034505206" />
-        </columns>
+      <TableView fx:id="Catalog">
+         <columns>
+            <TableColumn fx:id="SkuColumn" text="SKU" />
+            <TableColumn fx:id="NameColumn" text="Name" />
+            <TableColumn fx:id="TypeColumn" text="Type" />
+            <TableColumn fx:id="PriceColumn" text="Price" />
+            <TableColumn fx:id="DescriptionColumn" text="Description" />
+         </columns>
       </TableView>
       <VBox layoutX="416.0" layoutY="70.0" prefHeight="381.0" prefWidth="259.0">
          <children>
