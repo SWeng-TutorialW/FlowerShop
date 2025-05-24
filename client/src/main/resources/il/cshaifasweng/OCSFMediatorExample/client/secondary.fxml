@@ -1,16 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SecondaryController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="688.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SecondaryController">
     <children>
-        <Label text="Secondary View" />
-        <Button fx:id="secondaryButton" text="Switch to Primary View" onAction="#switchToPrimary" />
-    </children>
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-</VBox>
+        <TableView fx:id="Catalog">
+            <columns>
+                <TableColumn fx:id="SkuColumn" text="SKU" />
+                <TableColumn fx:id="NameColumn" text="Name" />
+                <TableColumn fx:id="TypeColumn" text="Type" />
+                <TableColumn fx:id="PriceColumn" text="Price" />
+            </columns>
+        </TableView>
+        <VBox layoutX="416.0" layoutY="70.0" prefHeight="381.0" prefWidth="259.0">
+            <children>
+                <HBox prefHeight="27.0" prefWidth="259.0">
+                    <children>
+                        <Label fx:id="SkuLabel" prefHeight="27.0" prefWidth="31.0" text="Sku:" />
+                        <TextField fx:id="SkuText" editable="false" prefHeight="26.0" prefWidth="223.0" />
+                    </children>
+                </HBox>
+                <HBox prefHeight="23.0" prefWidth="259.0">
+                    <children>
+                        <Label fx:id="LabelName" prefHeight="25.0" prefWidth="40.0" text="Name:" />
+                        <TextField fx:id="NameText" editable="false" prefHeight="25.0" prefWidth="217.0" />
+                    </children>
+                </HBox>
+                <HBox prefHeight="23.0" prefWidth="259.0">
+                    <children>
+                        <Label fx:id="TypeLabel" prefHeight="25.0" prefWidth="40.0" text="Type:" />
+                        <TextField fx:id="TypeText" editable="false" prefHeight="25.0" prefWidth="217.0" />
+                    </children>
+                </HBox>
+                <HBox prefHeight="23.0" prefWidth="259.0">
+                    <children>
+                        <Label fx:id="PriceLabel" prefHeight="25.0" prefWidth="40.0" text="Price:" />
+                        <TextField fx:id="PriceText" editable="false" prefHeight="25.0" prefWidth="217.0" />
+                    </children>
+                </HBox>
+                <HBox prefHeight="23.0" prefWidth="259.0">
+                    <children>
+                        <Label fx:id="ImageLabel" prefHeight="25.0" prefWidth="40.0" text="Image:" />
+                        <ImageView fx:id="ImageView" fitHeight="150.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true" />
+                    </children>
+                </HBox>
+                <HBox prefHeight="60.0" prefWidth="259.0">
+                    <children>
+                        <Label fx:id="DetailsLabel" prefHeight="25.0" prefWidth="40.0" text="Details:" />
+                        <TextField fx:id="DetailsText" prefHeight="59.0" prefWidth="220.0" />
+                    </children>
+                </HBox>
+                <HBox prefHeight="29.0" prefWidth="259.0">
+                    <children>
+                        <Button fx:id="AddButton" disable="true" mnemonicParsing="false" prefHeight="29.0" prefWidth="85.0" text="Add To Cart" />
+                        <Region prefHeight="11.0" prefWidth="39.0" />
+                        <Label fx:id="QuantityLabel" prefHeight="29.0" prefWidth="55.0" text="Quantity:" />
+                        <Spinner fx:id="QuantitySpinner" disable="true" prefHeight="30.0" prefWidth="85.0" />
+                    </children>
+                </HBox>
+                <HBox prefHeight="34.0" prefWidth="259.0">
+                    <children>
+                        <Button fx:id="SaveButton" disable="true" mnemonicParsing="false" prefHeight="38.0" prefWidth="77.0" text="Save" onAction="#handleSave"/>
+                        <Region prefHeight="34.0" prefWidth="103.0" />
+                        <Button fx:id="CancelButton" disable="true" mnemonicParsing="false" prefHeight="38.0" prefWidth="77.0" text="Cancel" onAction="#handleCancel"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <Button fx:id="AdminButton"
+                layoutX="546.0"
+                layoutY="14.0"
+                mnemonicParsing="false"
+                prefHeight="25.0"
+                prefWidth="128.0"
+                text="Exit Admin Mode"
+                onAction="#handleExitAdminMode"/>    </children>
+</AnchorPane>

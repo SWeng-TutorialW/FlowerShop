@@ -21,7 +21,6 @@
             <TableColumn fx:id="NameColumn" text="Name" />
             <TableColumn fx:id="TypeColumn" text="Type" />
             <TableColumn fx:id="PriceColumn" text="Price" />
-            <TableColumn fx:id="DescriptionColumn" text="Description" />
          </columns>
       </TableView>
       <VBox layoutX="416.0" layoutY="70.0" prefHeight="381.0" prefWidth="259.0">
@@ -79,6 +78,6 @@
             </HBox>
          </children>
       </VBox>
-      <Button fx:id="AdminButton" layoutX="546.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="128.0" text="Enter Admin Mode" />
+      <Button fx:id="AdminButton" layoutX="546.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="128.0" text="Enter Admin Mode" onAction="#handleAdminToggle" />
    </children>
 </AnchorPane>

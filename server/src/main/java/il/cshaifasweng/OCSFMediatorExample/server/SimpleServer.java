@@ -65,6 +65,24 @@ public class SimpleServer extends AbstractServer {
 						e.printStackTrace();
 					}
 					break;
+				case "updateFlower":
+					Flower updatedFlower = (Flower) map.get("flower");
+					boolean updatedOk = FlowerAccess.updateFlower(updatedFlower);
+					if (updatedOk) {
+						// Broadcast updated catalog to ALL clients
+						List<Flower> allFlowers = FlowerAccess.getAllFlowers();
+						for (Thread c : getClientConnections()) {
+                            c.setName(allFlowers.toString());
+                        }
+					} else {
+						//send error message to client
+						try {
+							client.sendToClient("Flower update failed");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					break;
 				default:
 					System.out.println("Unknown hashmap command: " + command);
 			}
@@ -73,6 +91,7 @@ public class SimpleServer extends AbstractServer {
 			System.out.println("Unknown message type from client: " + msg.getClass());
 		}
 	}
+
 
 	public void sendToAllClients(Object message) {
 		for (SubscribedClient subscribedClient : SubscribersList) {

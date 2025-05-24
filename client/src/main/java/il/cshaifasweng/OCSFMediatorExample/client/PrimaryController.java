@@ -6,14 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class PrimaryController {
 
@@ -89,8 +85,8 @@ public class PrimaryController {
 	@FXML
 	private TableColumn<Flower, Integer> SkuColumn;
 
-	@FXML
-	private TableColumn<Flower, String> DescriptionColumn;
+	//@FXML
+	//private TableColumn<Flower, String> DescriptionColumn;
 
 	@FXML // fx:id="TypeLabel"
 	private Label TypeLabel; // Value injected by FXMLLoader
@@ -101,14 +97,32 @@ public class PrimaryController {
 
 
 	public void initialize() {
-		// Set up the column value factories (connects table columns to Flower fields)
+		// setting up the values
+		QuantitySpinner.setValueFactory(new javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1));
 		SkuColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
 		NameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		TypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
 		PriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-		DescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+		//DescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-		// (Optional) Request all flowers from server when the UI loads:
+		NameText.setEditable(false);
+		TypeText.setEditable(false);
+		PriceText.setEditable(false);
+		DetailsText.setEditable(false);
+
+		Catalog.setRowFactory(tv -> {
+			TableRow<Flower> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if (!row.isEmpty() && event.getClickCount() == 2) {
+					Flower clickedFlower = row.getItem();
+					viewFlower(clickedFlower);
+				}
+			});
+			return row;
+		});
+
+
+		// Request all flowers from server when the catalog loads
 		try {
 			SimpleClient.getClient().sendToServer("getAllFlowers");
 		} catch (IOException e) {
@@ -120,5 +134,24 @@ public class PrimaryController {
 		ObservableList<Flower> flowers = FXCollections.observableArrayList(flowerList);
 		Catalog.setItems(flowers);
 	}
+
+	public void viewFlower(Flower flower) {
+		if (flower == null) return;
+		SkuText.setText(String.valueOf(flower.getSku()));
+		NameText.setText(flower.getName());
+		TypeText.setText(flower.getType());
+		PriceText.setText(String.valueOf(flower.getPrice()));
+		//DetailsText.setText(flower.getDescription());
+	}
+
+	@FXML
+	private void handleAdminToggle(ActionEvent event) {
+		try {
+			App.switchToAdminMode((Stage) AdminButton.getScene().getWindow());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 }
