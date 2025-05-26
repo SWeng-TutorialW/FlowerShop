@@ -41,8 +41,8 @@ public class PrimaryController {
 	@FXML // fx:id="DetailsLabel"
 	private Label DetailsLabel; // Value injected by FXMLLoader
 
-	@FXML // fx:id="DetailsText"
-	private TextField DetailsText; // Value injected by FXMLLoader
+	@FXML // fx:id="DetailsArea"
+	private TextArea DetailsArea; // Value injected by FXMLLoader
 
 	@FXML // fx:id="ImageLabel"
 	private Label ImageLabel; // Value injected by FXMLLoader
@@ -107,7 +107,7 @@ public class PrimaryController {
 		NameText.setEditable(isAdmin);
 		TypeText.setEditable(isAdmin);
 		PriceText.setEditable(isAdmin);
-		DetailsText.setEditable(isAdmin);
+		DetailsArea.setEditable(isAdmin);
 
 		SaveButton.setDisable(!isAdmin);
 		CancelButton.setDisable(!isAdmin);
@@ -130,7 +130,7 @@ public class PrimaryController {
 		NameText.setEditable(false);
 		TypeText.setEditable(false);
 		PriceText.setEditable(false);
-		DetailsText.setEditable(false);
+		DetailsArea.setEditable(false);
 
 		// Set up double-click to view details
 		Catalog.setRowFactory(tv -> {
@@ -170,7 +170,7 @@ public class PrimaryController {
 		NameText.setText(flower.getName());
 		TypeText.setText(flower.getType());
 		PriceText.setText(String.valueOf(flower.getPrice()));
-		//DetailsText.setText(flower.getDescription());
+		DetailsArea.setText(flower.getDescription());
 	}
 
 	@FXML

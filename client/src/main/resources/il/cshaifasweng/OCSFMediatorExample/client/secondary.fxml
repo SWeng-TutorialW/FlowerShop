@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
+<?import javafx.scene.control.TextArea?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="688.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SecondaryController">
     <children>
         <TableView fx:id="Catalog">
@@ -58,7 +59,7 @@
                 <HBox prefHeight="60.0" prefWidth="259.0">
                     <children>
                         <Label fx:id="DetailsLabel" prefHeight="25.0" prefWidth="40.0" text="Details:" />
-                        <TextField fx:id="DetailsText" prefHeight="59.0" prefWidth="220.0" />
+                        <TextArea fx:id="DetailsArea" wrapText="true" prefHeight="59.0" prefWidth="220.0" />
                     </children>
                 </HBox>
                 <HBox prefHeight="29.0" prefWidth="259.0">
