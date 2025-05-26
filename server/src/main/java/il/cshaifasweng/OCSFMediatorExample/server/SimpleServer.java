@@ -16,6 +16,8 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.SubscribedClient;
 
 public class SimpleServer extends AbstractServer {
 	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
+	private static final String ADMIN_PASSWORD = "12345"; // password to be admin
+
 
 	public SimpleServer(int port) {
 		super(port);
@@ -65,17 +67,30 @@ public class SimpleServer extends AbstractServer {
 						e.printStackTrace();
 					}
 					break;
+				case "verifyAdminCode":
+					String code = (String) map.get("code");
+					boolean allowed = ADMIN_PASSWORD.equals(code); // check against the real password
+					try {
+						client.sendToClient(allowed ? "admin_login_success" : "admin_login_failed");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					break;
 				case "updateFlower":
 					Flower updatedFlower = (Flower) map.get("flower");
 					boolean updatedOk = FlowerAccess.updateFlower(updatedFlower);
 					if (updatedOk) {
 						// Broadcast updated catalog to ALL clients
 						List<Flower> allFlowers = FlowerAccess.getAllFlowers();
-						for (Thread c : getClientConnections()) {
-                            c.setName(allFlowers.toString());
-                        }
+						for (Thread t : getClientConnections()) {
+							ConnectionToClient c = (ConnectionToClient) t;
+							try {
+								c.sendToClient(allFlowers);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
 					} else {
-						//send error message to client
 						try {
 							client.sendToClient("Flower update failed");
 						} catch (IOException e) {
