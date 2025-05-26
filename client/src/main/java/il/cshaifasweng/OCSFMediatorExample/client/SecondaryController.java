@@ -44,7 +44,7 @@ public class SecondaryController {
     private Label DetailsLabel; // Value injected by FXMLLoader
 
     @FXML // fx:id="DetailsText"
-    private TextField DetailsText; // Value injected by FXMLLoader
+    private TextArea DetailsArea; // Value injected by FXMLLoader
 
     @FXML // fx:id="ImageLabel"
     private Label ImageLabel; // Value injected by FXMLLoader
@@ -119,7 +119,7 @@ public class SecondaryController {
         NameText.setEditable(true);
         TypeText.setEditable(true);
         PriceText.setEditable(true);
-        DetailsText.setEditable(true); // If DetailsText is still used
+        DetailsArea.setEditable(true); // If DetailsText is still used
 
         // Enable and show Save/Cancel buttons
         SaveButton.setDisable(false);
@@ -165,7 +165,7 @@ public class SecondaryController {
         NameText.setText(flower.getName());
         TypeText.setText(flower.getType());
         PriceText.setText(String.valueOf(flower.getPrice()));
-        //DetailsText.setText(flower.getDescription());
+        DetailsArea.setText(flower.getDescription());
     }
 
     @FXML
@@ -195,7 +195,7 @@ public class SecondaryController {
         NameText.setEditable(isAdmin);
         TypeText.setEditable(isAdmin);
         PriceText.setEditable(isAdmin);
-        DetailsText.setEditable(isAdmin);
+        DetailsArea.setEditable(isAdmin);
 
         SaveButton.setDisable(!isAdmin);
         CancelButton.setDisable(!isAdmin);
@@ -214,7 +214,7 @@ public class SecondaryController {
             String name = NameText.getText();
             String type = TypeText.getText();
             double price = Double.parseDouble(PriceText.getText());
-            String description = DetailsText.getText();
+            String description = DetailsArea.getText();
 
             // Create a new Flower object
             Flower updatedFlower = new Flower(sku, name, type, price, description);
