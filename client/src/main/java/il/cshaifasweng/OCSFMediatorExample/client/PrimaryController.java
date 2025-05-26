@@ -3,6 +3,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Flower;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -98,6 +99,7 @@ public class PrimaryController {
 	private TextField TypeText; // Value injected by FXMLLoader
 
 
+	// this function is used to toggle between the buttons in admin mode and user mode when in user mode its disabled
 	public void setAdminMode(boolean isAdmin) {
 		isAdminMode = isAdmin;
 
@@ -114,21 +116,23 @@ public class PrimaryController {
 		AdminButton.setText(isAdmin ? "Exit Admin Mode" : "Enter Admin Mode");
 	}
 
-
+	// basic init function we are setting the values and catalog to show the database
 	public void initialize() {
-		// setting up the values
+		// Set up spinner and columns
 		QuantitySpinner.setValueFactory(new javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1));
 		SkuColumn.setCellValueFactory(new PropertyValueFactory<>("sku"));
 		NameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		TypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
 		PriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-		//DescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+		// DescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description")); // If used
 
+		// Set all fields to uneditable by default (user mode)
 		NameText.setEditable(false);
 		TypeText.setEditable(false);
 		PriceText.setEditable(false);
 		DetailsText.setEditable(false);
 
+		// Set up double-click to view details
 		Catalog.setRowFactory(tv -> {
 			TableRow<Flower> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
@@ -140,22 +144,26 @@ public class PrimaryController {
 			return row;
 		});
 
-
-		// Request all flowers from server when the catalog loads
-		try {
-			SimpleClient.getClient().sendToServer("getAllFlowers");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// Request all flowers from server once UI is ready
+		Platform.runLater(() -> {
+			try {
+				App.getClient().sendToServer("getAllFlowers");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
+
+	// when we want to update the catalog we call this function which uses an observable list
+	// to wrap the original flower list because an observable list reflects the changes isntantly
 	public void updateCatalog(java.util.List<Flower> flowerList) {
 		ObservableList<Flower> flowers = FXCollections.observableArrayList(flowerList);
 		Catalog.setItems(flowers);
 		Catalog.refresh();
 	}
 
-
+	// viewing the values of the clicked flower
 	public void viewFlower(Flower flower) {
 		if (flower == null) return;
 		SkuText.setText(String.valueOf(flower.getSku()));
@@ -166,6 +174,8 @@ public class PrimaryController {
 	}
 
 	@FXML
+	// this handles what happens when you click enter admin mode where it asks you for a password verifies the password
+	// and switching us to admin mode
 	private void handleAdminToggle() {
 		if (!isAdminMode) {
 			// Prompt for admin code
@@ -180,7 +190,7 @@ public class PrimaryController {
 				msg.put("command", "verifyAdminCode");
 				msg.put("code", code);
 				try {
-					SimpleClient.getClient().sendToServer(msg);
+					App.getClient().sendToServer(msg);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
