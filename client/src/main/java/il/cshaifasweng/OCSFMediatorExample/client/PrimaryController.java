@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Flower;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +19,8 @@ public class PrimaryController {
 	public PrimaryController() {
 		instance = this;
 	}
+	private boolean isAdminMode = false;
+
 
 	@FXML // fx:id="ActionColumn"
 	private TableColumn<Flower, Void> ActionColumn; // Value injected by FXMLLoader
@@ -95,6 +98,22 @@ public class PrimaryController {
 	private TextField TypeText; // Value injected by FXMLLoader
 
 
+	public void setAdminMode(boolean isAdmin) {
+		isAdminMode = isAdmin;
+
+		// enable/disable text fields and buttons as needed
+		NameText.setEditable(isAdmin);
+		TypeText.setEditable(isAdmin);
+		PriceText.setEditable(isAdmin);
+		DetailsText.setEditable(isAdmin);
+
+		SaveButton.setDisable(!isAdmin);
+		CancelButton.setDisable(!isAdmin);
+
+		// update the admin button text
+		AdminButton.setText(isAdmin ? "Exit Admin Mode" : "Enter Admin Mode");
+	}
+
 
 	public void initialize() {
 		// setting up the values
@@ -133,7 +152,9 @@ public class PrimaryController {
 	public void updateCatalog(java.util.List<Flower> flowerList) {
 		ObservableList<Flower> flowers = FXCollections.observableArrayList(flowerList);
 		Catalog.setItems(flowers);
+		Catalog.refresh();
 	}
+
 
 	public void viewFlower(Flower flower) {
 		if (flower == null) return;
@@ -145,13 +166,30 @@ public class PrimaryController {
 	}
 
 	@FXML
-	private void handleAdminToggle(ActionEvent event) {
-		try {
-			App.switchToAdminMode((Stage) AdminButton.getScene().getWindow());
-		} catch (IOException e) {
-			e.printStackTrace();
+	private void handleAdminToggle() {
+		if (!isAdminMode) {
+			// Prompt for admin code
+			TextInputDialog dialog = new TextInputDialog();
+			dialog.setTitle("Admin Login");
+			dialog.setHeaderText("Enter admin code:");
+			dialog.setContentText("Code:");
+
+			dialog.showAndWait().ifPresent(code -> {
+				// Send the entered code to the server for verification!
+				HashMap<String, Object> msg = new HashMap<>();
+				msg.put("command", "verifyAdminCode");
+				msg.put("code", code);
+				try {
+					SimpleClient.getClient().sendToServer(msg);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			});
+		} else {
+			setAdminMode(false); // Optional: for toggling back to user mode
 		}
 	}
+
 
 
 }

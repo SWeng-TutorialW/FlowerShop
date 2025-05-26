@@ -21,6 +21,8 @@ public class SecondaryController {
     public SecondaryController() {
         instance = this;
     }
+    private boolean isAdminMode = false;
+
 
 
     @FXML // fx:id="ActionColumn"
@@ -151,7 +153,9 @@ public class SecondaryController {
     public void updateCatalog(java.util.List<Flower> flowerList) {
         ObservableList<Flower> flowers = FXCollections.observableArrayList(flowerList);
         Catalog.setItems(flowers);
+        Catalog.refresh();
     }
+
 
     public void viewFlower(Flower flower) {
         if (flower == null) return;
@@ -179,6 +183,21 @@ public class SecondaryController {
             e.printStackTrace();
         }
     }
+
+    public void setAdminMode(boolean isAdmin) {
+        isAdminMode = isAdmin;
+
+        NameText.setEditable(isAdmin);
+        TypeText.setEditable(isAdmin);
+        PriceText.setEditable(isAdmin);
+        DetailsText.setEditable(isAdmin);
+
+        SaveButton.setDisable(!isAdmin);
+        CancelButton.setDisable(!isAdmin);
+
+        AdminButton.setText(isAdmin ? "Exit Admin Mode" : "Enter Admin Mode");
+    }
+
 
     @FXML
     private void handleSave(ActionEvent event) {

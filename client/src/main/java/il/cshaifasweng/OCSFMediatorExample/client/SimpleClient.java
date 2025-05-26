@@ -4,8 +4,11 @@ import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.Flower;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
 import java.util.List;
 
 public class SimpleClient extends AbstractClient {
@@ -18,7 +21,6 @@ public class SimpleClient extends AbstractClient {
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
-		System.out.println("Received message from server: " + msg);
 		if (msg instanceof Warning) {
 			EventBus.getDefault().post(new WarningEvent((Warning) msg));
 		}
@@ -47,13 +49,31 @@ public class SimpleClient extends AbstractClient {
 				});
 
 			}
-		} else {
-			// Handle plain string or other types
-			System.out.println(msg);
+		} else if (msg instanceof String) {
+			String s = (String) msg;
+			if (s.equals("admin_login_success")) {
+				Platform.runLater(() -> {
+					try {
+						// This will swap to the admin (secondary) scene!
+						App.switchToAdminMode(App.getMainStage());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+			} else if (s.equals("admin_login_failed")) {
+				Platform.runLater(() -> {
+					Alert alert = new Alert(Alert.AlertType.ERROR, "Incorrect admin code.", ButtonType.OK);
+					alert.showAndWait();
+				});
+			} else {
+				// Other string messages
+				System.out.println(msg);
+			}
 		}
 	}
 
-	public static SimpleClient getClient() {
+
+		public static SimpleClient getClient() {
 		if (client == null) {
 			client = new SimpleClient("localhost", 3000);
 		}
