@@ -102,6 +102,7 @@ public class SecondaryController {
 
 
 
+    // same init function explain in primary controller
     @FXML
     public void initialize() {
         // Set up the table columns for the catalog
@@ -143,20 +144,21 @@ public class SecondaryController {
 
         // Load flower catalog from server
         try {
-            SimpleClient.getClient().sendToServer("getAllFlowers");
+            App.getClient().sendToServer("getAllFlowers");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
+    // same update catalog explained in primary controller
     public void updateCatalog(java.util.List<Flower> flowerList) {
         ObservableList<Flower> flowers = FXCollections.observableArrayList(flowerList);
         Catalog.setItems(flowers);
         Catalog.refresh();
     }
 
-
+    // same view flower explain in primary controller
     public void viewFlower(Flower flower) {
         if (flower == null) return;
         SkuText.setText(String.valueOf(flower.getSku()));
@@ -167,6 +169,7 @@ public class SecondaryController {
     }
 
     @FXML
+    // press exit > goes back to user mode
     private void handleExitAdminMode(ActionEvent event) {
         try {
             App.switchToUserMode((Stage) AdminButton.getScene().getWindow());
@@ -176,6 +179,7 @@ public class SecondaryController {
     }
 
     @FXML
+    // same as exit handleAdminMode
     private void handleCancel(ActionEvent event) {
         try {
             App.switchToUserMode((Stage) CancelButton.getScene().getWindow());
@@ -184,6 +188,7 @@ public class SecondaryController {
         }
     }
 
+    // same as primary controller but in here the buttons are enabled
     public void setAdminMode(boolean isAdmin) {
         isAdminMode = isAdmin;
 
@@ -200,6 +205,8 @@ public class SecondaryController {
 
 
     @FXML
+    // when you press save button it takes the info from the data fields updated them or not and then makes a new
+    // flower object which in turn then sends to the server so it updates the database
     private void handleSave(ActionEvent event) {
         try {
             //Get the data from the fields
@@ -217,7 +224,7 @@ public class SecondaryController {
             msg.put("command", "updateFlower");
             msg.put("flower", updatedFlower);
 
-            SimpleClient.getClient().sendToServer(msg);
+            App.getClient().sendToServer(msg);
         } catch (Exception e) {
             e.printStackTrace();
         }

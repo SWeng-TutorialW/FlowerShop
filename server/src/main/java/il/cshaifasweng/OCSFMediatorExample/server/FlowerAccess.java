@@ -7,6 +7,7 @@ import java.util.List;
 
 public class FlowerAccess {
 
+    //SQL queries basically translated into code
     //Get all flowers
     public static List<Flower> getAllFlowers() {
         List<Flower> flowers = new ArrayList<>();

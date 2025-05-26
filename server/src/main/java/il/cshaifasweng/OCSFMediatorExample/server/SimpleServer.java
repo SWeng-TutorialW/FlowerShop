@@ -25,6 +25,7 @@ public class SimpleServer extends AbstractServer {
 	}
 
 	@Override
+	// you receive a message from the client about something that needs to be done and its done accordingly
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		if (msg instanceof String) {
 			String command = (String) msg;
