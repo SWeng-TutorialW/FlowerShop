@@ -19,10 +19,33 @@ public class SimpleServer extends AbstractServer {
 	private static final String ADMIN_PASSWORD = "12345"; // password to be admin
 
 
+
+
 	public SimpleServer(int port) {
+
 		super(port);
 		
 	}
+
+	private void checkIfNoClientsAndClose() {
+		if (this.getClientConnections().length == 1) {
+			System.out.println("No clients connected. Shutting down server...");
+			try {
+				this.close(); // stops accepting connections and closes server socket
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+	@Override
+	protected synchronized void clientDisconnected(ConnectionToClient client) {
+		System.out.println("clientDisconnected called! Current clients: " + this.getClientConnections().length);
+		super.clientDisconnected(client);
+		checkIfNoClientsAndClose();
+	}
+
 
 	@Override
 	// you receive a message from the client about something that needs to be done and its done accordingly

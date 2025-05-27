@@ -27,7 +27,6 @@ public class App
         // If the connection is successful, continue starting the server
         server = new SimpleServer(3050);
         server.listen();
-        System.out.println("Server is listening on port 3000!");
     }
 
 }
